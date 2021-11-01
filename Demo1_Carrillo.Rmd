@@ -1,0 +1,64 @@
+---
+title:  |
+  ![](INPUT/images/logo_facso.png){width=1.5in}  
+  
+  Demo 1: Análisis de blah blah blah
+author: "Carolina Carrillo"
+date: "`r format(Sys.time(), '%d/%m/%Y')`"
+output: html_document
+css: 'INPUT/css_georgia.css'
+csl: 'INPUT/bib/apa.csl'
+bibliography: 'INPUT/bib/CSC_2021.bib'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introducción
+
+Eso
+
+### Objetivo y pregunta de investigación
+
+Eso
+
+### Hipótesis
+
+Eso
+
+## Metodología
+
+Eso
+
+## Análisis primarios
+
+```{r paquetes}
+# 1. Cargar librarias
+# install.packages("pacman")
+# library(pacman)
+
+```
+
+
+# Referencias
+
+
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
