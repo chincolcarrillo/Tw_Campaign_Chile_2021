@@ -2,63 +2,422 @@
 title:  |
   ![](INPUT/images/logo_facso.png){width=1.5in}  
   
-  Demo 1: Análisis de blah blah blah
-author: "Carolina Carrillo"
+  Demo 1: Análisis de discursos de campaña en Twitter: Elecciones Presidenciales 2021 en Chile
+subtitle: "Ciencias Sociales Computacionales 2021, Facultad de Ciencias Sociales de la Universidad de Chile"
+author: "Camila Pávez, Maru Meléndez, Carolina Carrillo y Karina Moreno"
 date: "`r format(Sys.time(), '%d/%m/%Y')`"
-output: html_document
-css: 'INPUT/css_georgia.css'
+output: 
+  html_document:
+    number_sections: true
+    toc: true
+    toc_float: true
+    css: 'INPUT/css_georgia.css'
+    code_folding: hide
 csl: 'INPUT/bib/apa.csl'
 bibliography: 'INPUT/bib/CSC_2021.bib'
+nocite: '@*'
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 ```
 
-## Introducción
+# Introducción
 
-Eso
+Podemos rastrear el uso de redes sociales en campañas políticas en Chile hasta la elección presidencial de 2009-2010, la primera luego de la exitosa experiencia documentada a nivel mundial de la campaña por redes sociales desplegada por el equipo de campaña de Barack Obama (Cárdenas, Ballesteros y Jara, 2017; González-Bustamante y Muñoz, 2012). Tras estas elecciones, las redes sociales han estado presentes en prácticamente todas las campañas políticas chilenas, abriéndose paso principalmente en las candidaturas más jóvenes, siendo destacable el uso de redes sociales en las campañas de la coalición del Frente Amplio (MediaInteractive y TrenDigital, 2017; Huneeus, 2021). 
 
-### Objetivo y pregunta de investigación
+Se ha propuesto la importancia de analizar el rol de las campañas por redes sociales en contextos de desconfianza hacia las élites políticas, los medios tradicionales y el conocimiento de los expertos, pudiendo ser aplicable al contexto político chileno (Heiss, 2021). Ya se ha demostrado que en casos como el Brexit (Marshall y Drieschova, 2018), estos factores fueron importantes en la  elección de las personas a depender en fuentes alternativas de información. 
 
-Eso
+En esta línea, a nivel nacional se ha visto la tendencia del aumento del consumo y confianza en redes sociales, en desmedro de los medios comunicacionales tradicionales. La última encuesta CEP, realizada en diciembre del año 2019, muestra que un 28% de los encuestados manifestó tener mucha o bastante confianza en las redes sociales, en promedio superando la confianza en los medios tradicionales, como radio, periódicos y televisión. Asimismo, un 13% manifestó siempre seguir temas políticos a través de RRSS, y un 30% manifestó hacerlo a veces. Este porcentaje ha ido creciendo significativamente con los años, duplicándose desde la CEP Agosto 2015 (Centro de Estudios Públicos, 2020).
 
-### Hipótesis
+En tanto, el uso de tecnologías de la información y redes sociales también ha crecido precipitadamente. Distintos estudios afirman que Chile es probablemente uno de los países con mayor tasa de penetración de Internet en América Latina (Huawei, 2020), y los indicadores de conectividad no han dejado de crecer. En los últimos seis años, la conexión a internet móvil se ha duplicado en el país, llegando en diciembre de 2020 a una penetración total de aproximadamente 106 conexiones a red móvil por cada 100 habitantes (Subsecretaría de Telecomunicaciones de Chile [SUBTEL], 2020). Además, a esto se le debe sumar la aceleración de dichas transformaciones como fruto de las medidas sanitarias por COVID-19, habiéndose registrado en el último año un aumento de usuarios de internet y de redes sociales (Rosgaby, 2021).
 
-Eso
+A partir de lo presentado, se puede extraer la importancia del análisis de campaña en redes sociales, especialmente en Twitter. Ahora bien, este estudio contempla el análisis de Tweets producidos no sólo de los candidatos y sus comandos de campaña, sino que se propone el estudio de la campaña en redes sociales como una construcción plural de discursos. Al respecto, se ha sugerido que la participación interactiva de los electores, naturalmente promovida por las plataformas de redes sociales, constituye un mecanismo para aumentar el compromiso político y diálogo entre los usuarios (Bor, 2014). Así, se quiebra el modelo de consumo político de los medios de masas (Tironi y Cavallo, 2007), y la relación de los ciudadanos con las figuras políticas en redes sociales puede trascender las lógicas verticales de información y consumo, permitiendo horizontalidad en la creación de los contenidos políticos, su distribución en línea y la interacción virtual activa (González-Bustamante y Muñoz, 2012). 
 
-## Metodología
+Más aún, el presente estudio propone el análisis de Tweets publicados entre el 15 y 20 de noviembre, la última semana antes de la Primera Vuelta Presidencial. De esta forma coincidiendo con el fin del periodo de campaña oficial, el 18 de noviembre, luego del cual los candidatos y sus comandos deberán abandonar la campaña, pudiendo tomar un rol predominante las redes sociales.
 
-Eso
+## Pregunta de investigación
 
-## Análisis primarios
+A partir de lo presentado anteriormente, y considerando la falta de investigación actual respecto a la temática, es de interés explorar ¿cómo se despliegan los discursos de campaña en redes sociales, en Tweets que mencionan a les candidates presidenciales en Chile entre el 15 y el 20 de noviembre de 2021?
 
-```{r paquetes}
-# 1. Cargar librarias
+En esta línea, se propone analizar con fines exploratorios:
+*a.* La intensidad de campaña por Twitter en mención de cada candidate. Explorar la cantidad de tweets que mencionan a cada candidate.
+*b.* Las temáticas de campaña por Twitter en mención de cada candidate. Extrayendo el contenido semántico más frecuente de los Tweets seleccionados, analizar descriptivamente las temáticas presentes en los discursos de campaña.
+*c.* Las intenciones de campaña por Twitter en mención de cada candidate, a partir de las
+principales temáticas extraídas. 
+
+# Metodología
+
+Los datos se extrajeron desde la API de Twitter, utilizando para su recolección el paquete _rtweet 0.7.0_ en R. Se recolectaron tweets que contengan menciones directas a les siguientes candidates durante las semanas de propaganda electoral: Gabriel Boric (“\@gabrielboric”, “Gabriel Boric”, ”Boric”, “boric”), José Antonio Kast (“\@joseantoniokast”, “José Antonio Kast”, “J.A.K.”, “JAK”, “Kast”), Yasna Provoste (“\@provosteyasnal”, “Yasna Provoste”, “Provoste”, “provoste”), Sebastián Sichel (“\@sebastiansichel”,”Sebastián Sichel”, “Sichel”, “sichel”), Marco Enríquez-Ominami (“\@marcoporchile”, “Marco Enríquez Ominami”, “meo”, ”MEO”, “ME-O”), Franco Parisi (“\@parisi_oficial”, “Franco Parisi”, “Parisi”, “parisi”) y Eduardo Artés (“\@artes_oficial”, “Eduardo Artés”, “Artés”, “artés”). El análisis inicial de estos tweets se basa en la elaboración de gráficos de barras que exponen la cantidad de tweets por candidate, y nubes de palabras donde se visualizan lo que más se repite en los tweets con menciones directas hacia cada une.
+
+# Análisis primarios
+
+```{r paquetes y set-ups}
+# 1. Cargar librerias
 # install.packages("pacman")
-# library(pacman)
+library(pacman)
+p_load(rtweet, tidyverse, wordcloud, ggplot2, RColorBrewer, stopwords, wordcloud, tm)
+
+# 2.a. Se incluyen las credenciales personales de API Twitter
+# consumer_key <- 'XXX'
+# consumer_secret <- 'XXX'
+# access_token <- 'XXX'
+# access_secret <- 'XXX'
+
+# 2.b. Se autentifica vía web browser
+# token <- create_token(
+#          app = "Campaign_Chile_2021",
+#          consumer_key = consumer_key,
+#          consumer_secret = consumer_secret,
+#          access_token = access_token,
+#          access_secret = access_secret)
+# get_token()
+```
+
+```{r descarga de datos}
+# 3. Descarga primera semana
+# 3.a. Menciones candidato Boric
+# menciones_boric_1 <- search_tweets("@gabrielboric", retryonratelimit = TRUE)
+# menciones_boric_2<- search_tweets("Gabriel Boric", retryonratelimit = TRUE)
+# menciones_boric_3<- search_tweets("Boric", retryonratelimit = TRUE)
+# menciones_boric_4<- search_tweets("boric", retryonratelimit = TRUE)
+
+#3.b. Menciones candidato Kast
+# menciones_kast_1 <- search_tweets("@joseantoniokast", retryonratelimit = TRUE)
+# menciones_kast_2<- search_tweets("José Antonio Kast", retryonratelimit = TRUE)
+# menciones_kast_3<- search_tweets("J.A.K", retryonratelimit = TRUE)
+# menciones_kast_4<- search_tweets("JAK", retryonratelimit = TRUE)
+# menciones_kast_5<- search_tweets("Kast", retryonratelimit = TRUE)
+
+#3.c. Menciones candidata Provoste
+# menciones_provoste_1 <- search_tweets("@provosteyasnal", retryonratelimit = TRUE)
+# menciones_provoste_2 <- search_tweets("Yasna Provoste", retryonratelimit = TRUE)
+# menciones_provoste_3<- search_tweets("Provoste", retryonratelimit = TRUE)
+# menciones_provoste_4<- search_tweets("provoste", retryonratelimit = TRUE)
+
+#3.d. Menciones candidato Sichel
+# menciones_sichel_1 <- search_tweets("@sebastiansichel", retryonratelimit = TRUE)
+# menciones_sichel_2 <- search_tweets("Sebastián Sichel", retryonratelimit = TRUE)
+# menciones_sichel_3 <- search_tweets("Sichel", retryonratelimit = TRUE)
+# menciones_sichel_4<- search_tweets("sichel", retryonratelimit = TRUE)
+
+#3.e. Menciones candidato Enríquez-Ominami
+# menciones_meo_1 <- search_tweets("@marcoporchile", retryonratelimit = TRUE)
+# menciones_meo_2<- search_tweets("Marco Enríquez Ominami", retryonratelimit = TRUE)
+# menciones_meo_3<- search_tweets("meo", retryonratelimit = TRUE)
+# menciones_meo_4<- search_tweets("MEO", retryonratelimit = TRUE)
+# menciones_meo_5<- search_tweets("ME-O", retryonratelimit = TRUE)
+
+#3.f. Menciones candidato Parisi
+# menciones_parisi_1 <- search_tweets("@parisi_oficial", retryonratelimit = TRUE)
+# menciones_parisi_2<- search_tweets("Franco Parisi", retryonratelimit = TRUE)
+# menciones_parisi_3<- search_tweets("Parisi", retryonratelimit = TRUE)
+# menciones_parisi_4<- search_tweets("parisi", retryonratelimit = TRUE)
+
+#3.g. Menciones candidato Artés
+# menciones_artes_1 <- search_tweets("@artes_oficial", retryonratelimit = TRUE)
+# menciones_artes_2<- search_tweets("Eduardo Artés", retryonratelimit = TRUE)
+# menciones_artes_3<- search_tweets("Artés", retryonratelimit = TRUE)
+# menciones_artes_4<- search_tweets("artés", retryonratelimit = TRUE)
 
 ```
 
+```{r produccion BBDD}
+# 4.a. Arrange data frame candidato Boric
+# boric1<-menciones_boric_1[, c('text')]
+# boric2<-menciones_boric_2[, c('text')]
+# boric3<-menciones_boric_3[, c('text')]
+# boric4<-menciones_boric_4[, c('text')]
+# databoric <- rbind(boric1,boric2,boric3,boric4)
+# databoric <- databoric[!duplicated(databoric),]
+
+# 4.b. Arrange data frame candidato Kast
+# kast1 <- menciones_kast_1[,c('text')]
+# kast2 <- menciones_kast_2[,c('text')]
+# kast3 <- menciones_kast_3[,c('text')]
+# kast4 <- menciones_kast_4[,c('text')]
+# kast5 <- menciones_kast_5[,c('text')]
+# datakast <- rbind(kast1,kast2,kast3,kast4,kast5)
+# datakast <- datakast[!duplicated(datakast),]
+
+# 4.c. Arrange data frame candidata Provoste
+# provoste1 <- menciones_provoste_1[,c('text')]
+# provoste2 <- menciones_provoste_2[,c('text')]
+# provoste3 <- menciones_provoste_3[,c('text')]
+# provoste4 <- menciones_provoste_4[,c('text')]
+# dataprovoste <- rbind(provoste1,provoste2,provoste3,provoste4)
+# dataprovoste<-dataprovoste[!duplicated(dataprovoste),]
+
+# 4.d. Arrange data frame candidato Sichel
+# sichel1 <- menciones_sichel_1[,c('text')]
+# sichel2 <- menciones_sichel_2[,c('text')]
+# sichel3 <- menciones_sichel_3[,c('text')]
+# sichel4 <- menciones_sichel_4[,c('text')]
+# datasichel <- rbind(sichel1,sichel2,sichel3,sichel4)
+# datasichel <-datasichel[!duplicated(datasichel),]
+
+# 4.e. Arrange data frame candidato Enríquez-Ominami
+# meo1 <- menciones_meo_1[,c('text')]
+# meo2 <- menciones_meo_2[,c('text')]
+# meo3 <- menciones_meo_3[,c('text')]
+# meo4 <- menciones_meo_4[,c('text')]
+# meo5 <- menciones_meo_5[,c('text')]
+# datameo <- rbind(meo1,meo2,meo3,meo4,meo5)
+# datameo <- datameo[!duplicated(datameo),]
+
+# 4.f. Arrange data frame candidato Parisi
+# parisi1 <- menciones_parisi_1[,c('text')]
+# parisi2 <- menciones_parisi_2[,c('text')]
+# parisi3 <- menciones_parisi_3[,c('text')]
+# parisi4 <- menciones_parisi_4[,c('text')]
+# dataparisi <- rbind(parisi1,parisi2,parisi3,parisi4)
+# dataparisi <-dataparisi[!duplicated(dataparisi),]
+
+# 4.g. Arrange data frame candidato Artés
+# artes1 <- menciones_artes_1[,c('text')]
+# artes2 <- menciones_artes_2[,c('text')]
+# artes3 <- menciones_artes_3[,c('text')]
+# artes4 <- menciones_artes_4[,c('text')]
+# dataartes <- rbind(artes1,artes2,artes3,artes4)
+# dataartes <- dataartes[!duplicated(dataartes),]
+
+# 5. Guardar BBDD de cada cantidate
+# save(databoric, file="INPUT/data/proc_data/databoric.RData")
+# save(dataartes, file="INPUT/data/proc_data/dataartes.RData")
+# save(datakast, file="INPUT/data/proc_data/datakast.RData")
+# save(datameo, file="INPUT/data/proc_data/datameo.RData")
+# save(dataparisi, file="INPUT/data/proc_data/dataparisi.RData")
+# save(datasichel, file="INPUT/data/proc_data/datasichel.RData")
+# save(dataprovoste, file="INPUT/data/proc_data/dataprovoste.RData")
+```
+
+```{r descargar BBDD}
+# 6. Descargar BBDD para el análisis
+load("INPUT/data/proc_data/databoric.RData")
+load("INPUT/data/proc_data/datakast.RData")
+load("INPUT/data/proc_data/dataprovoste.RData")
+load("INPUT/data/proc_data/datasichel.RData")
+load("INPUT/data/proc_data/datameo.RData")
+load("INPUT/data/proc_data/dataparisi.RData")
+load("INPUT/data/proc_data/dataartes.RData")
+```
+
+
+```{r grafico numero tweets}
+#7.a. Crear df con numero de tweets
+n_tweets <- data.frame("Candidates"=c("Boric","Artés","Kast", "Enríquez-Ominami", 
+                                      "Parisi", "Sichel", "Provoste"), 
+                        "n_tweets"=c(13863, 11603, 28782, 18829, 13069, 14538, 14586))
+
+#7.b. Crear grafico de barras
+ggplot(n_tweets, aes(x= Candidates, y= n_tweets)) + 
+  geom_bar(stat = "identity") +
+  labs(title="Figura 1: Cantidad de tweets por candidate",
+  caption="Elaboración propia en base a Twitter API (2021)",
+  x="Candidato/a", y="Cantidad de Tweets")
+
+#7.c. Promedio 
+x_tweets <- (13863 + 11603 + 28782 + 18829 + 13069 + 14538 + 14586)/7
+
+```
+Se observa que el candidato con mayor cantidad de tweets que le mencionan es Kast, seguido por Enríquez-Ominami y Boric. El promedio de tweets por candidate mencionade es aproximadamente de 16467.
+
+
+```{r wordcloud: limpiar}
+#8. Eliminar algunos carácteres que tienen los tweets
+limpiar_tokenizar <- function(text){
+  # Todo el texto a minúsculas
+  nuevo_texto <- tolower(text)
+  # Eliminación de páginas web y de cualquier cosa que no sea un espacio
+  nuevo_texto <- str_replace_all(nuevo_texto,"http\\S*", "")
+  # Eliminación de signos de puntuación
+  nuevo_texto <- str_replace_all(nuevo_texto,"[[:punct:]]", " ")
+  # Eliminación de números
+  nuevo_texto <- str_replace_all(nuevo_texto,"[[:digit:]]", " ")
+  # Eliminación de espacios en blanco múltiples
+  nuevo_texto <- str_replace_all(nuevo_texto,"[\\s]+", " ")
+  # Tokenización por palabras individuales
+  nuevo_texto <- str_split(nuevo_texto, " ")[[1]]
+  # Eliminación de tokens con una longitud < 2
+  nuevo_texto <- keep(.x = nuevo_texto, .p = function(x){str_length(x) > 1})
+  return(nuevo_texto)
+}
+```
+
+```{r wordcloud: tokenizar}
+#9.a. Tokenizar texto Boric
+databoric <- databoric %>% mutate(texto_tokenizado = map(.x=databoric$text,
+                                                    .f=limpiar_tokenizar))
+#9.c. Tokenizar texto Kast
+datakast <- datakast %>% mutate(texto_tokenizado = map(.x=datakast$text,
+                                                    .f=limpiar_tokenizar))
+#9.c. Tokenizar texto Provoste
+dataprovoste <- dataprovoste %>% mutate(texto_tokenizado = map(.x=dataprovoste$text,
+                                                   .f=limpiar_tokenizar))
+#9.d. Tokenizar texto Sichel
+datasichel <- datasichel %>% mutate(texto_tokenizado = map(.x=datasichel$text,
+                                                    .f=limpiar_tokenizar))
+#9.e. Tokenizar texto Enríquez-Ominami
+datameo <- datameo %>% mutate(texto_tokenizado = map(.x=datameo$text,
+                                                    .f=limpiar_tokenizar))
+#9.f. Tokenizar texto Parisi
+dataparisi <- dataparisi %>% mutate(texto_tokenizado = map(.x=dataparisi$text,
+                                                    .f=limpiar_tokenizar))
+#9.g. Tokenizar texto Artés
+dataartes <- dataartes %>% mutate(texto_tokenizado = map(.x=dataartes$text,
+                                                    .f=limpiar_tokenizar))
+```
+
+```{r expandir lista tokens}
+#10.a. Expansión de la lista de tokens Boric
+texto_boric_tidy <- databoric %>% select(texto_tokenizado) %>% unnest(cols=c(texto_tokenizado))
+texto_boric_tidy <- texto_boric_tidy %>% rename(token = texto_tokenizado)
+head(texto_boric_tidy)
+```
+
+```{r }
+#10.b. Expansión de la lista de tokens Kast
+texto_kast_tidy <- datakast %>% select(texto_tokenizado) %>% unnest(cols=c(texto_tokenizado))
+texto_kast_tidy <- texto_kast_tidy %>% rename(token = texto_tokenizado)
+head(texto_kast_tidy)
+```
+
+```{r}
+#10.c. Expansión de la lista de tokens Provoste
+texto_provoste_tidy <- dataprovoste %>% select(texto_tokenizado) %>% unnest(cols=c(texto_tokenizado))
+texto_provoste_tidy <- texto_provoste_tidy %>% rename(token = texto_tokenizado)
+head(texto_provoste_tidy)
+```
+
+```{r}
+#10.d. Expansión de la lista de tokens Sichel
+texto_sichel_tidy <- datasichel %>% select(texto_tokenizado) %>% unnest(cols=c(texto_tokenizado))
+texto_sichel_tidy <- texto_sichel_tidy %>% rename(token = texto_tokenizado)
+head(texto_sichel_tidy)
+```
+
+```{r}
+#10.e. Expansión de la lista de tokens Enríquez-Ominami
+texto_meo_tidy <- datameo %>% select(texto_tokenizado) %>% unnest(cols=c(texto_tokenizado))
+texto_meo_tidy <- texto_meo_tidy %>% rename(token = texto_tokenizado)
+head(texto_meo_tidy)
+```
+
+```{r}
+#10.f. Expansión de la lista de tokens Parisi
+texto_parisi_tidy <- dataparisi %>% select(texto_tokenizado) %>% unnest(cols=c(texto_tokenizado))
+texto_parisi_tidy <- texto_parisi_tidy %>% rename(token = texto_tokenizado)
+head(texto_parisi_tidy)
+```
+
+```{r}
+#10.g. Expansión de la lista de tokens Artés
+texto_artes_tidy <- dataartes %>% select(texto_tokenizado) %>% unnest(cols=c(texto_tokenizado))
+texto_artes_tidy <- texto_artes_tidy %>% rename(token = texto_tokenizado)
+head(texto_artes_tidy)
+```
+
+```{r wordcloud: eliminar}
+#11. Se usa el paquete de pablabras a eliminar en español
+lista_stopwords <- stopwords('es')
+
+#12. Se generan las listas de stopwords por candidato
+lista_stopwordsboric <- c(lista_stopwords, "de", "que", "los", "se", "con", "no","si", 
+                                   "gabriel","boric",
+                                   "gabrielboric","rt","and",
+                                    "dm","san","cta","cl","mr","ht","bco","tan",
+                                    "hrs","tantas","vez","y")
+
+lista_stopwordskast <- c(lista_stopwords, "de", "que", "los", "se", "con", "no","si", 
+                                   "josé", "antonio", "kast", "jak",
+                                   "joseantoniokast","rt","and",
+                                    "dm","san","cta","cl","mr","ht","bco","tan",
+                                    "hrs","tantas","vez","y")
+
+lista_stopwordsprovoste<- c(lista_stopwords, "de", "que", "los", "se", "con", "no","si", 
+                                   "provoste", "provosteyasna",
+                                   "yasna","rt","and",
+                                    "dm","san","cl","mr","ht","tan",
+                                    "hrs","tantas","vez","y")
+
+lista_stopwordssichel<- c(lista_stopwords, "de", "que", "los", "se", "con", "no","si", 
+                                   "sichel", "sebastiansichel",
+                                   "sebastian","rt","and",
+                                    "dm","san","cl","mr","ht","tan",
+                                    "hrs","tantas","vez","y")
+
+lista_stopwordsmeo<- c(lista_stopwords, "de", "que", "los", "se", "con", "no","si", 
+                                   "meo","me-o","marcoenriqueominami",
+                                   "marcoporchile","rt","and",
+                                    "dm","san","cta","cl","mr","ht","bco","tan",
+                                    "hrs","tantas","vez","y")
+
+lista_stopwordsparisi<- c(lista_stopwords, "de", "que", "los", "se", "con", "no","si",
+                          "parisi","francoparisi","franco","parisioficial",
+                          "oficial","rt","and", "dm","san","cta","cl","mr","ht",
+                          "bco","tan", "hrs","tantas","vez","y")
+
+lista_stopwordsartes <- c(lista_stopwords, "de", "que", "los", "se", "con", "no","si", 
+                                   "eduardo","artes", "artés", "oficial",
+                                   "eduardoartes","rt","and",
+                                    "dm","san","cl","mr","ht","tan",
+                                    "hrs","tantas","vez","y")
+
+#13. Filtrar stopwords
+boric_filtered <- texto_boric_tidy %>% filter(!(token %in% lista_stopwordsboric))
+kast_filtered <- texto_kast_tidy %>% filter(!(token %in% lista_stopwordskast))
+provoste_filtered <- texto_provoste_tidy %>% filter(!(token %in% lista_stopwordsprovoste))
+sichel_filtered <- texto_sichel_tidy %>% filter(!(token %in% lista_stopwordssichel))
+meo_filtered <- texto_meo_tidy %>% filter(!(token %in% lista_stopwordsmeo))
+parisi_filtered <- texto_parisi_tidy %>% filter(!(token %in% lista_stopwordsparisi))
+artes_filtered <- texto_artes_tidy %>% filter(!(token %in% lista_stopwordsartes))
+```
+
+```{r wordcloud final boric}
+wordcloud(words = boric_filtered$token,
+          max.words= 200, min.freq = 200,
+          random.order=FALSE, rot.per = 0.35, colors = brewer.pal(8, "Dark2"))
+```
+
+```{r wordcloud final kast}
+wordcloud(words = kast_filtered$token,
+          max.words= 200, min.freq = 200,
+          random.order=FALSE, rot.per = 0.35, colors = brewer.pal(8, "Dark2"))
+```
+Problemas con el identificador "JAK". Si bien hay tweets que hacen referencia al candidato de esa forma, es una palabra que dificulta el acceso a contenido que realmente haga referencia a J.A.Kast.
+
+```{r wordcloud final provoste}
+wordcloud(words = provoste_filtered$token,
+          max.words= 200, min.freq = 200,
+          random.order=FALSE, rot.per = 0.35, colors = brewer.pal(8, "Dark2"))
+```
+```{r wordcloud final sichel}
+wordcloud(words = sichel_filtered$token,
+          max.words= 200, min.freq = 200,
+          random.order=FALSE, rot.per = 0.35, colors = brewer.pal(8, "Dark2"))
+```
+
+```{r wordcloud final meo}
+wordcloud(words = meo_filtered$token,
+          max.words= 200, min.freq = 200,
+          random.order=FALSE, rot.per = 0.35, colors = brewer.pal(8, "Dark2"))
+```
+
+
+```{r wordcloud final parisi}
+wordcloud(words = parisi_filtered$token,
+          max.words= 200, min.freq = 200,
+          random.order=FALSE, rot.per = 0.35, colors = brewer.pal(8, "Dark2"))
+```
+
+```{r wordcloud final artes}
+wordcloud(words = artes_filtered$token,
+          max.words= 200, min.freq = 200,
+          random.order=FALSE, rot.per = 0.35, colors = brewer.pal(8, "Dark2"))
+```
+
+.
 
 # Referencias
 
-
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+<div id="refs"></div>
