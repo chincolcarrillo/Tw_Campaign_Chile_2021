@@ -220,7 +220,7 @@ ggplot(n_tweets, aes(x= Candidates, y= n_tweets)) +
 x_tweets <- (13863 + 11603 + 28782 + 18829 + 13069 + 14538 + 14586)/7
 
 ```
-Se observa que el candidato con mayor cantidad de tweets que le mencionan es Kast, seguido por Enríquez-Ominami y Boric. El promedio de tweets por candidate mencionade es aproximadamente de 16467.
+Se observa que le candidate con mayor cantidad de tweets que le mencionan es Kast, seguido por Enríquez-Ominami y Boric. El promedio de tweets por candidate mencionade es aproximadamente de 16467. 
 
 
 ```{r wordcloud: limpiar}
